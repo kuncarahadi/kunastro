@@ -19,6 +19,30 @@ const { language = 'en', textDirection = 'ltr' } = SITE;
 <html lang={language} dir={textDirection} class="2xl:text-[20px]">
   <head>
     <MetaTags {...meta} />
+    
+    <script
+      src="https://identity.netlify.com/v1/netlify-identity-widget.js"
+      async
+    ></script>
+    <script>
+      // Adds "netlifyIdentity" field to window typescript definition
+      declare global {
+        interface Window {
+          netlifyIdentity: any
+        }
+      }
+
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on('init', (user: any) => {
+          if (!user) {
+            window.netlifyIdentity.on('login', () => {
+              document.location.href = '/admin/'
+            })
+          }
+        })
+      }
+    
+    </script>
   </head>
 
   <body class="antialiased text-page bg-light dark:text-slate-300 tracking-tight dark:bg-dark">
